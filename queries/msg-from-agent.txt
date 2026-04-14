@@ -1,0 +1,94 @@
+[Round 2 - Agent Answer]
+
+关于 Python 异步编程的详细解答：
+
+1. Python 中如何实现异步？用什么库？
+
+Python 异步编程主要使用 asyncio 库，这是 Python 3.4+ 内置的标准库。
+
+核心组件：
+- asyncio: 核心异步 IO 库（内置）
+- aiohttp: 异步 HTTP 客户端/服务器
+- aiomysql/aiopg: 异步数据库操作
+- asyncpg: 异步 PostgreSQL 驱动
+
+基本实现方式：
+- 使用 async def 定义协程函数
+- 使用 await 等待异步操作完成
+- 使用 asyncio.run() 运行主协程
+
+2. async 和 await 关键字具体怎么用？
+
+async:
+- 用于定义协程函数：async def func():
+- 调用 async 函数会返回协程对象，需要用 await 或 asyncio.create_task()
+
+await:
+- 只能在 async 函数内部使用
+- 用于等待异步操作完成
+- 会暂停当前协程，让出执行权给其他任务
+
+3. 简单代码例子：
+
+示例 1 - 基础异步函数：
+
+import asyncio
+
+async def say_hello(delay, name):
+    await asyncio.sleep(delay)
+    print(f"Hello, {name}!")
+
+async def main():
+    await say_hello(1, "Alice")
+    await say_hello(1, "Bob")
+
+asyncio.run(main())
+
+示例 2 - 并发执行多个任务：
+
+import asyncio
+
+async def fetch_data(task_id, delay):
+    print(f"Task {task_id} 开始")
+    await asyncio.sleep(delay)
+    print(f"Task {task_id} 完成")
+    return f"Data-{task_id}"
+
+async def main():
+    results = await asyncio.gather(
+        fetch_data(1, 2),
+        fetch_data(2, 1),
+        fetch_data(3, 3)
+    )
+    print(f"所有结果：{results}")
+
+asyncio.run(main())
+
+示例 3 - 实际场景（异步 HTTP 请求）：
+
+import asyncio
+import aiohttp
+
+async def fetch_url(session, url):
+    async with session.get(url) as response:
+        return await response.text()
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        tasks = [
+            fetch_url(session, "https://api.example.com/1"),
+            fetch_url(session, "https://api.example.com/2")
+        ]
+        responses = await asyncio.gather(*tasks)
+        print(responses)
+
+# asyncio.run(main())
+
+关键点总结：
+- async def 定义协程
+- await 等待异步操作
+- asyncio.run() 启动异步程序
+- asyncio.gather() 并发执行多个任务
+- 异步适合 IO 密集型任务（网络、文件、数据库）
+
+--- 等待用户下一轮问题 ---

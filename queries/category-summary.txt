@@ -1,0 +1,17 @@
+Category Summary Report
+=======================
+
+Category A:
+  Count: 2
+  Sum: 250
+  Average: 125
+
+Category B:
+  Count: 2
+  Sum: 450
+  Average: 225
+
+Category C:
+  Count: 1
+  Sum: 300
+  Average: 300

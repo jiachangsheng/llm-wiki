@@ -1,0 +1,2 @@
+mode=A
+version=1
